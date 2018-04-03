@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/PierceMor/liri-node-app#readme",
   "dependencies": {
-    "npm": "^5.8.0"
+    "fs-extra": "^5.0.0",
+    "npm": "^5.8.0",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2"
   }
 }
