@@ -1,25 +1,42 @@
 let dotEnv = require("dotenv").config();
 let request = require('request-promise');
 let fs = require('fs-extra');
-
 let keys = require('./keys.js');
+let twitter = require('twitter');
+
+
+//place holdder for the twitter keys
+var client = new twitter({
+    consumer_key: keys.TWITTER_CONSUMER_KEY,
+    consumer_secret: keys.TWITTER_CONSUMER_SECRET,
+    access_token_key: keys.TWITTER_ACCESS_TOKEN_KEY,
+    access_token_secret: keys.TWITTER_ACCESS_TOKEN_SECRET,
+});
+
+// place holder for the spotify kezs
+// var spotify = new spotify({
+//     spotify_key: keys.SPOTIFY_ID,
+//     spotify_secret: keys.SPOTIFY_SECRET  
+// });
+
+
 
 // ---- user input and running the commands ----
 let fun = process.argv.slice(2);
 let choices = [ 'movie-this', 'my-tweets', 'spotify-this-song', 'do-what-it-says' ];
 
-if ( fun === 'do-what-it-says' ) {
+if ( fun[0]  === 'do-what-it-says' ) {
     readCommand();
 } else {
     dontRead();
 }
 
 function dontRead(){
-if (fun === choices[0] ) {
+if (fun[0] === choices[0] ) {
     movieThis();
-} else if ( fun === choices[1] ) {
+} else if ( fun[0]  === choices[1] ) {
     tweetBaby();
-} else if ( fun === choices[2] ) {
+} else if ( fun[0]  === choices[2] ) {
     spotifyBaby();
 } else (
     console.log(
@@ -35,7 +52,7 @@ function readCommand(){
 // --- MOVIE ---
     function movieThis(){
 
-    let movie = process.argv.slice(3).join('+');
+    let movie = fun[1];
 
     // thsi should set aa default command prompt
     if (movie === '' ){
@@ -68,7 +85,7 @@ function readCommand(){
             // console.log( 'Plot of the movie: ' + data.Plot);
             // console.log( 'Actors in the movie: ' + data.Actors);
             // console.log(data);
-        });
+        }).catch(function(err){ console.log(err)});
     }
 
 // ----- TWEETS ------
