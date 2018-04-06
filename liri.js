@@ -62,29 +62,36 @@ function readCommand(){
     //Key = 8b7b736c 
     request('http://www.omdbapi.com/?t=' + movie + '&r=json&plot=short&apikey=8b7b736c')
         .then(response=> {
-            let data = JSON.parse(response);
+            let data = JSON.parse(response)
+            if ( data || 'false') {
+                console.log('Movie not found');
+            } else {
 
-            tomatoes = "cats";
+                let tomatoes = tomatoesRule();
 
-            console.log(`
-            Title of the movie: ${data.Title}
-            Year the movie came out: ${data.Year}
-            IMDB Rating of the movie: ${data.imdbRating}
-            Rotten Tomatoes Rating of the movie ${tomatoes}
-            Country where the movie was produced: ${data.Country}
-            Language of the movie: ${data.Language}
-            Plot of the movie: ${data.Plot}
-            Actors in the movie: ${data.Actors}
+                console.log(`
+                Title of the movie: ${data.Title}
+                Year the movie came out: ${data.Year}
+                IMDB Rating of the movie: ${data.imdbRating}
+                Rotten Tomatoes Rating of the movie: ${tomatoes}
+                Country where the movie was produced: ${data.Country}
+                Language of the movie: ${data.Language}
+                Plot of the movie: ${data.Plot}
+                Actors in the movie: ${data.Actors}
             `);
-            // console.log( 'Title of the movie: ' + data.Title);
-            // console.log( 'Year the movie came out: ' + data.Year);
-            // console.log( 'IMDB Rating of the movie: ' + data.imdbRating);
-            // console.log( 'Rotten Tomatoes Rating of the movie ' + data.Ratings[data.Ratings.length -2 ].Value);
-            // console.log( 'Country where the movie was produced: ' + data.Country);
-            // console.log( 'Language of the movie: ' + data.Language);
-            // console.log( 'Plot of the movie: ' + data.Plot);
-            // console.log( 'Actors in the movie: ' + data.Actors);
-            // console.log(data);
+            }
+
+            function tomatoesRule(data){
+                let index = 0;
+                for (var i = 0; i < reviews.length; i++){
+                    if (reviews[i].Source || "Rotten Tomatoes")
+                        return reviews[i].Value;
+                }
+                return "None";
+            }
+
+            
+           
         }).catch(function(err){ console.log(err)});
     }
 
