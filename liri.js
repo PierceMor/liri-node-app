@@ -63,32 +63,33 @@ function readCommand(){
     request('http://www.omdbapi.com/?t=' + movie + '&r=json&plot=short&apikey=8b7b736c')
         .then(response=> {
             let data = JSON.parse(response)
-            if ( data || 'false') {
+            if ( data === 'false') {
                 console.log('Movie not found');
             } else {
 
-                let tomatoes = tomatoesRule();
+                let rottenTomatoes = "";
+
+               
+                    let reviews=data.Ratings;
+                
+                    for (var i = 0; i < data.Ratings.length; i++){
+                        if (data.Ratings[i].Source == "Rotten Tomatoes")
+                        {rottenTomatoes = data.Ratings[i].Value;}
+                    }
 
                 console.log(`
                 Title of the movie: ${data.Title}
                 Year the movie came out: ${data.Year}
                 IMDB Rating of the movie: ${data.imdbRating}
-                Rotten Tomatoes Rating of the movie: ${tomatoes}
+                Rotten Tomatoes Rating of the movie: ${rottenTomatoes}
                 Country where the movie was produced: ${data.Country}
                 Language of the movie: ${data.Language}
                 Plot of the movie: ${data.Plot}
                 Actors in the movie: ${data.Actors}
             `);
             }
-
-            function tomatoesRule(data){
-                let index = 0;
-                for (var i = 0; i < reviews.length; i++){
-                    if (reviews[i].Source || "Rotten Tomatoes")
-                        return reviews[i].Value;
-                }
-                return "None";
-            }
+            
+           
 
             
            
