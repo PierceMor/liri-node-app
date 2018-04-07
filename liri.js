@@ -2,16 +2,8 @@ let dotEnv = require("dotenv").config();
 let request = require('request-promise');
 let fs = require('fs-extra');
 let keys = require('./keys.js');
-let twitter = require('twitter');
 
 
-//place holdder for the twitter keys
-var client = new twitter({
-    consumer_key: keys.TWITTER_CONSUMER_KEY,
-    consumer_secret: keys.TWITTER_CONSUMER_SECRET,
-    access_token_key: keys.TWITTER_ACCESS_TOKEN_KEY,
-    access_token_secret: keys.TWITTER_ACCESS_TOKEN_SECRET,
-});
 
 // place holder for the spotify kezs
 // var spotify = new spotify({
@@ -20,8 +12,10 @@ var client = new twitter({
 // });
 
 
+//---------------------------------------------------------------
+// ---- user input and running the commands ---------------------
+//---------------------------------------------------------------
 
-// ---- user input and running the commands ----
 let fun = process.argv.slice(2);
 let choices = [ 'movie-this', 'my-tweets', 'spotify-this-song', 'do-what-it-says' ];
 
@@ -44,15 +38,21 @@ if (fun[0] === choices[0] ) {
     ));
 }
 
-// Read the damn thing 
+//---------------------------------------------------------------
+// Read the damn thing ------------------------------------------
+//---------------------------------------------------------------
+
 function readCommand(){
     console.log(`wtf is happenig`);
 }
 
-// --- MOVIE ---
+//---------------------------------------------------------------
+// --- MOVIE ----------------------------------------------------
+//---------------------------------------------------------------
+
     function movieThis(){
 
-    let movie = fun[1];
+    let movie = fun.slice(1).join('+');
 
     // thsi should set aa default command prompt
     if (movie === '' ){
@@ -87,23 +87,44 @@ function readCommand(){
                 Plot of the movie: ${data.Plot}
                 Actors in the movie: ${data.Actors}
             `);
-            }
-            
-           
-
-            
-           
+            } 
         }).catch(function(err){ console.log(err)});
     }
 
-// ----- TWEETS ------
+//-----------------------------------------------------------------
+// ----- TWEETS ---------------------------------------------------
+//-----------------------------------------------------------------
 
     function tweetBaby(){
-        console.log(`fuck`);
+
+        let twitter = require('twitter');
+
+        //place holdder for the twitter keys
+        var client = new twitter(keys.twitter);
+
+        var params = {
+            count: 20,
+            include_rts: true,
+        };
+
+        client.get( 'statuses/user_timeline', params, function(error, tweets, response){
+            if (!error){
+               
+                for (var i=0; i < tweets.length; i++){
+                    var n = i + 1;
+                    console.log(`
+                    ${n}
+                    Created:  ${tweets[i].created_at}
+                    Text:  ${tweets[i].text}
+                    `);
+                }
+            }           
+        });
     }
 
-// Spotify 
-
+//---------------------------------------------------------------
+//------- Spotify -----------------------------------------------
+//---------------------------------------------------------------
     function spotifyBaby(){
-        console.log(`music bitch`);
+        console.log(`music thing?`);
     }
