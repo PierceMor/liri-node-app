@@ -45,11 +45,9 @@ if (fun[0] === choices[0] ) {
 function readCommand(){
     fs.readFile("random.txt", "utf8", (err, data) => {
         if (err) throw err;
-        data=data.slice(",");
-        fun[0]=data;
-        dontRead();
-        console.log(data);
-        console.log(fun);
+        fun[0]=data.slice(0,10);
+        fun[1]=data.slice(11, 18);
+        dontRead(fun);
     });
         
 }
