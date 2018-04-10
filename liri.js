@@ -43,7 +43,15 @@ if (fun[0] === choices[0] ) {
 //---------------------------------------------------------------
 
 function readCommand(){
-    console.log(`wtf is happenig`);
+    fs.readFile("random.txt", "utf8", (err, data) => {
+        if (err) throw err;
+        data=data.slice(",");
+        fun[0]=data;
+        dontRead();
+        console.log(data);
+        console.log(fun);
+    });
+        
 }
 
 //---------------------------------------------------------------
@@ -88,7 +96,7 @@ function readCommand(){
                 Actors in the movie: ${data.Actors}
             `);
             } 
-        }).catch(function(err){ console.log(err)});
+        }).catch(function(err){console.log(err)});
     }
 
 //-----------------------------------------------------------------
@@ -126,5 +134,5 @@ function readCommand(){
 //------- Spotify -----------------------------------------------
 //---------------------------------------------------------------
     function spotifyBaby(){
-        console.log(`music thing?`);
+        console.log(`The Girlfriend wouldnt give me her Spotify premium password.......`);
     }
